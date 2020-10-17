@@ -33,3 +33,29 @@ Use `run.exe` (change encoding + assembling + linking)
 ```sh
 run.exe {filename}
 ```
+
+---
+
+## Use GCC Linker instead
+
+encoding utf8
+
+```sh
+chcp 65001
+```
+
+__Assembler__
+```sh
+nasm -f win64 {filename}.asm
+```
+
+__Linker__
+```sh
+gcc {filename.obj} -o filename.exe
+```
+
+Example code
+
+```Nasm
+
+```
