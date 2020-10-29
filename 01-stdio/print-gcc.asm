@@ -2,12 +2,11 @@
 ; Assemble:
 ; nasm -f win64 {filename}.asm
 ; Link:
-; gcc {filename}.asm -o {filename}.exe
+; gcc {filename}.o -o {filename}.exe
 ;
 ; Reference:
 ; https://cs.lmu.edu/~ray/notes/nasmtutorial/
 ;----------------------------------------
-
 
     global main
     extern printf
