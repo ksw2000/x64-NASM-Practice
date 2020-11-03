@@ -54,8 +54,19 @@ __Linker__
 gcc {filename.obj} -o filename.exe
 ```
 
-Example code
+__Example__
 
-```Nasm
+```nasm
+    global main
+    extern printf
 
+section .text
+    main:
+    mov rcx, msg
+    sub rsp, 32
+    call printf
+    add rsp, 32
+
+section .data
+    msg: db 'Hello World', 0
 ```
