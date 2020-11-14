@@ -2,7 +2,7 @@
 ; Assemble:
 ; nasm -f elf64 {filename}.asm
 ; Link:
-; gcc {filename}.obj -o {filename}.exe
+; gcc {filename}.obj -o {filename}
 ; syscall table for x86_64
 ; https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
 ;----------------------------------------
