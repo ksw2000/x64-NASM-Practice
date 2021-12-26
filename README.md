@@ -1,72 +1,56 @@
-# x64-Nasm-Practice
+# x64-NASM-Practice
 
->
-> My practice for x64 Nasm under windows
->
-> Assembler: `nasm`
->
-> Linker: `GoLink`
->
+My practice for Intel x86_64 NASM on Windows
 
 ## Quick start
 
-encoding utf8
-
 ```sh
+# utf8
 chcp 65001
-```
 
-__.asm to .obj__
-```sh
+# assemble
 nasm -f win64 {filename}.asm
-```
 
-__.obj to .exe__
-```sh
+# link by goLink
 goLink /console {filename}.obj msvcrt.dll
+
+# or by gcc
+gcc {filename}.obj -o {output}.exe
 ```
 
-## Quick start by run.exe
-
-Use `run.exe` (change encoding + assembling + linking)
+**or use batch file**
 
 ```sh
-run.exe {filename}
+# link by goLink
+./run.cmd {filename_without_extension}
+
+# link by gcc
+./run-gcc.cmd {filename_without_extension}
 ```
 
----
+## The difference between gcc and goLink
 
-## Use GCC Linker instead
-
-encoding utf8
-
-```sh
-chcp 65001
-```
-
-__Assembler__
-```sh
-nasm -f win64 {filename}.asm
-```
-
-__Linker__
-```sh
-gcc {filename.obj} -o filename.exe
-```
-
-__Example__
+**for gcc**
 
 ```nasm
     global main
-    extern printf
-
-section .text
-    main:
-    mov rcx, msg
-    sub rsp, 32
-    call printf
-    add rsp, 32
-
 section .data
-    msg: db 'Hello World', 0
+section .bss
+section .text
+main:
+    ; TODO
 ```
+
+**for goLinker**
+
+```nasm
+section .data
+section .bss
+section .text
+start:
+    ; TODO
+```
+
+## Useful Link
+
++ [Appendix B: x86 Instruction Reference](https://www.csie.ntu.edu.tw/~comp03/nasm/nasmdocb.html)
