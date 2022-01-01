@@ -1,55 +1,77 @@
-; without feof
-EXTERN printf, fopen, fgetc, fclose
-SECTION .data
-    path    db '..\\demo.txt', 0
-    mode    db 'r', 0
-    fmt     db '%c', 0
-    err     db 'can not open demo.txt', 0xd, 0xa, 0
+;--------------------------------------------------------
+; Read file without using feof()
+;
+; Assemble:
+; nasm -f win64 {filename}.asm
+;
+; Link:
+; gcc {filename}.obj -o {filename}.exe
+; goLink /console {filename}.obj /entry main msvcrt.dll
+;
+; Run: (command line)
+; chcp 65001
+; {filename}.exe
+;--------------------------------------------------------
 
-SECTION .bss
-f       resq 1 ; qword [f] = FILE*
-char    resq 1 ; record fgetc's c
-SECTION .text
-start:
-    ; fopen(path, mode)
-    ; return rax
-    mov     rcx, path
-    mov     rdx, mode
-    sub     rsp, 32
-    call    fopen
-    add     rsp, 32
-    mov     qword [f], rax
-    cmp     rax, 0
-    je      fopenNil
+        global  main
+        extern  printf
+        extern  fopen
+        extern  fgetc
+        extern  fclose
 
-L1:
-    ; use fgetc to read
-    mov     rcx, [f]
-    sub     rsp, 32
-    call    fgetc
-    add     rsp, 32
+        section .data
+path:   db      './demo.txt', 0
+mode:   db      'r', 0
+fmt:    db      '%c', 0
+err:    db      'can not open demo.txt', 0xd, 0xa, 0
 
-    cmp     eax, -1 ; if eax == EOF goto close
-    jz      close
+        section .bss
+f:      resq    1  ; qword [f] = FILE*
+char:   resq    1 ; record fgetc's c
+        section .text
+main:
+        ; fopen(path, mode)
+        mov     rcx, path
+        mov     rdx, mode
+        sub     rsp, 32
+        call    fopen
+        add     rsp, 32
+        ; return rax (type: FILE*)
+        
+        ; check fopen is success (non-nil)
+        cmp     rax, 0
+        je      main.fopenNil
 
-    ; print
-    mov     rcx, fmt
-    mov     rdx, rax
-    sub     rsp, 32
-    call    printf
-    add     rsp, 32
-    jmp     L1
+        mov     qword [f], rax
 
-close:
-    mov     rcx, [f]
-    sub     rsp, 32
-    call    fclose
-    add     rsp, 32
-    ret
+.read:
+        ; read by fgetc()
+        mov     rcx, [f]
+        sub     rsp, 32
+        call    fgetc
+        add     rsp, 32
 
-fopenNil:
-    mov     rcx, err
-    sub     rsp, 32
-    call    printf
-    add     rsp, 32
-    ret
+        cmp     eax, -1         ; if eax == EOF goto close
+        jz      main.close
+
+        ; print character
+        mov     rcx, fmt
+        mov     rdx, rax
+        sub     rsp, 32
+        call    printf
+        add     rsp, 32
+        jmp     main.read
+
+.close:
+        mov     rcx, [f]
+        sub     rsp, 32
+        call    fclose
+        add     rsp, 32
+        ret
+
+.fopenNil:
+        mov     rcx, err
+        sub     rsp, 32
+        call    printf
+        add     rsp, 32
+        ret
