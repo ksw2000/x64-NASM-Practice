@@ -1,43 +1,66 @@
-EXTERN  printf, scanf
-SECTION .data
-    request     db  'please input an integer: ', 0
-    inFmt       db  '%d', 0
-    resultStr   db  '%d! = %d', 0
+;--------------------------------------------------------
+; Example of using custom function, factorial, in NASM
+;
+; Assemble:t
+; nasm -f win64 {filename}.asm
+;
+; Link:
+; gcc {filename}.obj -o {filename}.exe
+; goLink /console {filename}.obj /entry main msvcr.dll
+;-------------------------------------------------------
 
-SECTION .bss
-num     RESB    1
+        global  main
+        extern  printf
+        extern  scanf
 
-SECTION .text
-;input: rcx , return: rbx
+        section .data
+request:
+        db      'please input an integer: ', 0
+inFmt:  db      '%d', 0
+resultStr:
+        db      '%d! = %d', 0
+
+        section .bss
+num:    resb    1
+
+        section .text
+
+        ; input: rcx
+        ; return: rbx
 factorial:
-    xor     rbx,    rbx
-    mov     rbx,    1
-.Fac:
-    IMUL    rbx,    rcx
-    LOOP    factorial.Fac
-    ret
+        xor     rbx, rbx
+        mov     rbx, 1
 
-start:
-    ;printf: please input an integer
-    mov     rcx,    request
-    sub     rsp,    32
-    call    printf
-    add     rsp,    32
+.fac:
+        imul    rbx, rcx
+        loop    factorial.fac
+        ret
 
-    ;scanf
-    mov     rcx,    inFmt
-    mov     rdx,    num
-    sub     rsp,    32
-    call    scanf
-    add     rsp,    32
+main:
+        ; printf: please input an integer
+        mov     rcx, request
+        sub     rsp, 32
+        call    printf
+        add     rsp, 32
 
-    mov     rcx,    [num]
-    call    factorial
+        ; scanf
+        mov     rcx, inFmt
+        mov     rdx, num
+        sub     rsp, 32
+        call    scanf
+        add     rsp, 32
 
-    ;printf
-    mov     rcx,    resultStr
-    mov     rdx,    [num]
-    mov     r8,     rbx
-    sub     rsp,    32
-    call    printf
-    add     rsp,    32
+        mov     rcx, [num]
+        call    factorial
+
+        ; printf
+        mov     rcx, resultStr
+        mov     rdx, [num]
+        mov     r8, rbx
+        sub     rsp, 32
+        call    printf
+        add     rsp, 32
+        ret
+
+; please input an integer: 5
+; 5! = 120
