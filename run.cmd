@@ -1,6 +1,6 @@
 @echo off
 chcp 65001
 nasm -f win64 "%1.asm" -o "%1.obj"
-golink /console %1.obj msvcrt.dll
+golink /console %1.obj /entry main msvcrt.dll
 echo -----------------------------------------------------
 "%1.exe"
