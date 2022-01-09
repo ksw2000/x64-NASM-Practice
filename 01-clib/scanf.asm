@@ -43,3 +43,7 @@ main:
         call    printf
         add     rsp, 32
         ret
+
+; ---------------------- Output ----------------------
+; keyin a dword int:8
+; you input 8
