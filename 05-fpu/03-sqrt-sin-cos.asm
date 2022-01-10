@@ -12,16 +12,16 @@
         extern  printf
 
         section .data
-title:  db  '     x    x*x     sqrt     sinx      cosx', 0xd, 0xa
-        db  '-------------------------------------------', 0xd, 0xa, 0
-fmt:    db  '%6.1f %6.2f   %6.4f   %6.4f   %+6.4f', 0xd, 0xa, 0
-delta:  dq  0.1
-num:    dq  1.0
+title:  db      '     x    x*x     sqrt     sinx      cosx', 0xd, 0xa
+        db      '-------------------------------------------', 0xd, 0xa, 0
+fmt:    db      '%6.1f %6.2f   %6.4f   %6.4f   %+6.4f', 0xd, 0xa, 0
+delta:  dq      0.1
+num:    dq      1.0
         section .bss
-square:  resq    1
-sqrt:    resq    1
-sin:     resq    1
-cos:     resq    1
+square:  resq   1
+sqrt:    resq   1
+sin:     resq   1
+cos:     resq   1
         section .text
 main:
         ; printf(title)
